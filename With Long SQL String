@@ -17,10 +17,10 @@ Set conn = New ADODB.Connection
 Set rs = New ADODB.Recordset
 
 strConn = "Provider=OraOLEDB.oracle;" 'driver 'Driver={Microsoft ODBC for Oracle};
-'strConn = strConn & "Data Source=NameofDataSource;" 'uses your tnsnames.ora
-strConn = strConn & "Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=actuarial-quotes.magmutual.com)" 'server location
-strConn = strConn & "(PORT=1521)))" 'server port
-strConn = strConn & "(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=ORAWSACT)));" 'connect to database
+'strConn = strConn & "Data Source=NameofDataSource;" 'DataSource Name
+strConn = strConn & "Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=CompanyHostAddress)" 'Location Server
+strConn = strConn & "(PORT=PortNumber)))" 'server port
+strConn = strConn & "(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=ServiceName)));" 'connect to database
 strConn = strConn & "User Id=UserName;Password=Password;" 'user name and password
 
 conn.ConnectionString = strConn
