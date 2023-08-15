@@ -27,7 +27,7 @@ conn.ConnectionString = strConn
 'conn.ConnectionTimeout = 60 'in seconds
 conn.Open
 
-SQL = " DELETE FROM T_LDF WHERE ASOF=" & Range("ASOF").Value
+SQL = " DELETE FROM TableName WHERE ASOF=" & Range("ASOF").Value
 SQL = SQL & " AND LABEL='" & Range("LABEL").Value & "'"
 SQL = SQL & " AND POLICY_TYPE='" & Range("Policy_Type").Value & "'"
 SQL = SQL & " AND LOB='" & Range("LOB").Value & "'"
@@ -36,7 +36,7 @@ SQL = SQL & " AND DY='" & Range("DY").Value & "'"
 SQL = SQL & " AND CAP='" & Range("Cap").Value & "'"
 
 rs.Open SQL, conn, adOpenKeyset, adLockReadOnly   
-
+'List of Sheets Names
 snames(1) = "CDF_RC"
 snames(2) = "CDF_CWP"
 snames(3) = "CDF_CWI"
