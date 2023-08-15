@@ -20,11 +20,11 @@ strConn = "Provider=OraOLEDB.oracle;" 'driver 'Driver={Microsoft ODBC for Oracle
 'strConn = strConn & "Data Source=DRABPRD;" 'uses your tnsnames.ora
 strConn = strConn & "Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=actuarial-quotes.magmutual.com)" 'server location
 strConn = strConn & "(PORT=1521)))" 'server port
-strConn = strConn & "(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=ORAWSACT)));" 'database
-strConn = strConn & "User Id=DATA_SHARE;Password=D4t4_5h4r3;" 'user name / password
+strConn = strConn & "(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=ORAWSACT)));" 'connect to database
+strConn = strConn & "User Id=DATA_SHARE;Password=D4t4_5h4r3;" 'user name and password
 
 conn.ConnectionString = strConn
-conn.ConnectionTimeout = 60 'in seconds
+'conn.ConnectionTimeout = 60 'in seconds
 conn.Open
 
 SQL = " DELETE FROM T_LDF WHERE ASOF=" & Range("ASOF").Value
@@ -35,7 +35,7 @@ SQL = SQL & " AND COMPANY='" & Range("Company").Value & "'"
 SQL = SQL & " AND DY='" & Range("DY").Value & "'"
 SQL = SQL & " AND CAP='" & Range("Cap").Value & "'"
 
-rs.Open SQL, conn, adOpenKeyset, adLockReadOnly   'where, how, cursor (0 is fastest, 3 allows going backwards), read-only
+rs.Open SQL, conn, adOpenKeyset, adLockReadOnly   
 
 snames(1) = "CDF_RC"
 snames(2) = "CDF_CWP"
@@ -56,9 +56,8 @@ snames(16) = "CDF_PAID_IND_OC"
 snames(17) = "CDF_PAID_EXP_OC"
 snames(18) = "CDF_PAID_IND_MBCE"
 snames(19) = "CDF_PAID_EXP_MBCE"
-    
-'For Each sname In snames
-Set ssheet = Worksheets(snames(1))
+
+Set ssheet = Worksheets(snames(1)) 'For Each sheet name
 j = 2
 Do While j <= 53
 i = 2
@@ -132,7 +131,7 @@ SQL = SQL & ")" & Chr(10)
 i = i + 1
 Loop
     SQL = SQL & " SELECT 1 FROM DUAL"
-    rs.Open SQL, conn, adOpenKeyset, adLockReadOnly   'where, how, cursor (0 is fastest, 3 allows going backwards), read-only
+    rs.Open SQL, conn, adOpenKeyset, adLockReadOnly   
 
 j = j + 1
 Loop
@@ -147,5 +146,5 @@ Application.ScreenUpdating = True
 'Application.Calculation = xlCalculationAutomatic
 Inputs.Cells(27, 2).Value = Date & " " & Time
 
-exitsub:
+'exitsub:
 End Sub
