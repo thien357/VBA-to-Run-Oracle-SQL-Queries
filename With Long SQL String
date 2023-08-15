@@ -1,0 +1,151 @@
+Option Explicit
+Sub LDF()
+       
+
+Dim strConn As String
+Dim conn As ADODB.Connection
+Dim rs As ADODB.Recordset
+Dim SQL As String
+Dim ssheet As Worksheet
+Dim i As Integer, j As Integer
+Dim snames(1 To 19) As String, sname As Variant
+
+Application.ScreenUpdating = False
+'Application.Calculation = xlCalculationManual
+
+Set conn = New ADODB.Connection
+Set rs = New ADODB.Recordset
+
+strConn = "Provider=OraOLEDB.oracle;" 'driver 'Driver={Microsoft ODBC for Oracle};
+'strConn = strConn & "Data Source=DRABPRD;" 'uses your tnsnames.ora
+strConn = strConn & "Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=actuarial-quotes.magmutual.com)" 'server location
+strConn = strConn & "(PORT=1521)))" 'server port
+strConn = strConn & "(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=ORAWSACT)));" 'database
+strConn = strConn & "User Id=DATA_SHARE;Password=D4t4_5h4r3;" 'user name / password
+
+conn.ConnectionString = strConn
+conn.ConnectionTimeout = 60 'in seconds
+conn.Open
+
+SQL = " DELETE FROM T_LDF WHERE ASOF=" & Range("ASOF").Value
+SQL = SQL & " AND LABEL='" & Range("LABEL").Value & "'"
+SQL = SQL & " AND POLICY_TYPE='" & Range("Policy_Type").Value & "'"
+SQL = SQL & " AND LOB='" & Range("LOB").Value & "'"
+SQL = SQL & " AND COMPANY='" & Range("Company").Value & "'"
+SQL = SQL & " AND DY='" & Range("DY").Value & "'"
+SQL = SQL & " AND CAP='" & Range("Cap").Value & "'"
+
+rs.Open SQL, conn, adOpenKeyset, adLockReadOnly   'where, how, cursor (0 is fastest, 3 allows going backwards), read-only
+
+snames(1) = "CDF_RC"
+snames(2) = "CDF_CWP"
+snames(3) = "CDF_CWI"
+snames(4) = "CDF_CWE"
+snames(5) = "ATA_OC"
+snames(6) = "CDF_CWP_OC"
+snames(7) = "CDF_CWI_OC"
+snames(8) = "CDF_CWI_MBCE"
+snames(9) = "CDF_CWP_MBCE"
+snames(10) = "CDF_PAID"
+snames(11) = "CDF_PAID_IND"
+snames(12) = "CDF_PAID_EXP"
+snames(13) = "CDF_RPTD"
+snames(14) = "CDF_RPTD_IND"
+snames(15) = "CDF_RPTD_EXP"
+snames(16) = "CDF_PAID_IND_OC"
+snames(17) = "CDF_PAID_EXP_OC"
+snames(18) = "CDF_PAID_IND_MBCE"
+snames(19) = "CDF_PAID_EXP_MBCE"
+    
+'For Each sname In snames
+Set ssheet = Worksheets(snames(1))
+j = 2
+Do While j <= 53
+i = 2
+SQL = "INSERT ALL" & Chr(10)
+Do While i <= 81
+SQL = SQL & " INTO T_LDF ("
+SQL = SQL & " ASOF"
+SQL = SQL & ", LABEL"
+SQL = SQL & ", DY"
+SQL = SQL & ", POLICY_TYPE"
+SQL = SQL & ", LOB"
+SQL = SQL & ", COMPANY"
+SQL = SQL & ", CAP"
+SQL = SQL & ", ST"
+SQL = SQL & ", AGE"
+SQL = SQL & ", " & snames(1)
+SQL = SQL & ", " & snames(2)
+SQL = SQL & ", " & snames(3)
+SQL = SQL & ", " & snames(4)
+SQL = SQL & ", " & snames(5)
+SQL = SQL & ", " & snames(6)
+SQL = SQL & ", " & snames(7)
+SQL = SQL & ", " & snames(8)
+SQL = SQL & ", " & snames(9)
+SQL = SQL & ", " & snames(10)
+SQL = SQL & ", " & snames(11)
+SQL = SQL & ", " & snames(12)
+SQL = SQL & ", " & snames(13)
+SQL = SQL & ", " & snames(14)
+SQL = SQL & ", " & snames(15)
+SQL = SQL & ", " & snames(16)
+SQL = SQL & ", " & snames(17)
+SQL = SQL & ", " & snames(18)
+SQL = SQL & ", " & snames(19)
+
+SQL = SQL & ") VALUES ("
+
+SQL = SQL & Range("ASOF").Value
+SQL = SQL & ",'" & Range("LABEL").Value & "'"
+SQL = SQL & ",'" & Range("DY").Value & "'" 'Development Year type
+SQL = SQL & ",'" & Range("Policy_Type").Value & "'"
+SQL = SQL & ",'" & Range("LOB").Value & "'"
+SQL = SQL & ",'" & Range("Company").Value & "'"
+SQL = SQL & ",'" & Range("Cap").Value & "'"
+
+SQL = SQL & ",'" & ssheet.Cells(1, j).Value & "'" 'ST
+SQL = SQL & "," & ssheet.Cells(i, 1).Value 'Year
+
+SQL = SQL & ", " & Worksheets(snames(1)).Cells(i, j).Value
+SQL = SQL & ", " & Worksheets(snames(2)).Cells(i, j).Value
+SQL = SQL & ", " & Worksheets(snames(3)).Cells(i, j).Value
+SQL = SQL & ", " & Worksheets(snames(4)).Cells(i, j).Value
+SQL = SQL & ", " & Worksheets(snames(5)).Cells(i, j).Value
+SQL = SQL & ", " & Worksheets(snames(6)).Cells(i, j).Value
+SQL = SQL & ", " & Worksheets(snames(7)).Cells(i, j).Value
+SQL = SQL & ", " & Worksheets(snames(8)).Cells(i, j).Value
+SQL = SQL & ", " & Worksheets(snames(9)).Cells(i, j).Value
+SQL = SQL & ", " & Worksheets(snames(10)).Cells(i, j).Value
+SQL = SQL & ", " & Worksheets(snames(11)).Cells(i, j).Value
+SQL = SQL & ", " & Worksheets(snames(12)).Cells(i, j).Value
+SQL = SQL & ", " & Worksheets(snames(13)).Cells(i, j).Value
+SQL = SQL & ", " & Worksheets(snames(14)).Cells(i, j).Value
+SQL = SQL & ", " & Worksheets(snames(15)).Cells(i, j).Value
+SQL = SQL & ", " & Worksheets(snames(16)).Cells(i, j).Value
+SQL = SQL & ", " & Worksheets(snames(17)).Cells(i, j).Value
+SQL = SQL & ", " & Worksheets(snames(18)).Cells(i, j).Value
+SQL = SQL & ", " & Worksheets(snames(19)).Cells(i, j).Value
+
+SQL = SQL & ")" & Chr(10)
+
+i = i + 1
+Loop
+    SQL = SQL & " SELECT 1 FROM DUAL"
+    rs.Open SQL, conn, adOpenKeyset, adLockReadOnly   'where, how, cursor (0 is fastest, 3 allows going backwards), read-only
+
+j = j + 1
+Loop
+
+'Next sname
+'rs.Close
+conn.Close
+Set conn = Nothing
+Set rs = Nothing
+
+Application.ScreenUpdating = True
+'Application.Calculation = xlCalculationAutomatic
+Inputs.Cells(27, 2).Value = Date & " " & Time
+
+exitsub:
+End Sub
