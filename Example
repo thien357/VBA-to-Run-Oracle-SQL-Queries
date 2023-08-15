@@ -1,0 +1,36 @@
+Sub RunOracleQuery()
+    Dim conn As Object
+    Set conn = CreateObject("ADODB.Connection")
+    
+    ' Connection string for Oracle (replace placeholders with actual values)
+    conn.ConnectionString = "Provider=OraOLEDB.Oracle;Data Source=your_server_name;User ID=your_username;Password=your_password;"
+    
+    On Error Resume Next
+    conn.Open ' Open the connection
+    On Error GoTo 0
+    
+    If conn.State = 1 Then ' Check if connection is open
+        Dim rs As Object
+        Set rs = CreateObject("ADODB.Recordset")
+        
+        Dim query As String
+        query = "SELECT column1, column2 FROM your_table"
+        
+        rs.Open query, conn ' Execute the query
+        
+        ' Loop through the recordset and do something with the data
+        Do While Not rs.EOF
+            Debug.Print rs("column1").Value, rs("column2").Value
+            rs.MoveNext
+        Loop
+        
+        rs.Close
+        Set rs = Nothing
+        
+        conn.Close ' Close the connection
+    Else
+        MsgBox "Failed to connect to the database."
+    End If
+    
+    Set conn = Nothing
+End Sub
