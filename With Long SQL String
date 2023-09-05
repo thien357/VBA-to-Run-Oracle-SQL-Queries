@@ -17,14 +17,14 @@ Sub LDF()
     conn.ConnectionString = strConn
     conn.Open
 
-    ' SQL DELETE Statement
+  
     SQL = "DELETE FROM TableName WHERE ASOF=" & Range("ASOF").Value & " AND LABEL='" & Range("LABEL").Value & "' AND POLICY_TYPE='" & Range("Policy_Type").Value & "' AND LOB='" & Range("LOB").Value & "' AND COMPANY='" & Range("Company").Value & "' AND DY='" & Range("DY").Value & "' AND CAP='" & Range("Cap").Value & "'"
     rs.Open SQL, conn, adOpenKeyset, adLockReadOnly
 
     ' List of Sheets Names
     Dim snames(1 To 19) As String
     snames(1) = "CDF_RC"
-    ' Add the rest of the sheet names here
+   
 
     For j = 2 To 53
         Set ssheet = Worksheets(snames(1))
